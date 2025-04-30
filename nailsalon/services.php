@@ -1,65 +1,38 @@
 <?php
+// services.php
+include 'includes/sessions.php';
 require 'includes/database-connection.php';
 
-$service_id = $_GET['service_id'] ?? '';
-
-function get_service_info(PDO $pdo, string $service_id): array|false {
-    $sql = "
-        SELECT *
-        FROM Service
-        WHERE ServiceID = :service_id
-        LIMIT 1;
-    ";
-    $stmt = $pdo->prepare($sql);
-    $stmt->execute(['service_id' => $service_id]);
-    return $stmt->fetch(PDO::FETCH_ASSOC);
+function get_all_services(PDO $pdo): array {
+    $sql = "SELECT * FROM Service ORDER BY ServiceID;";
+    return $pdo->query($sql)->fetchAll(PDO::FETCH_ASSOC);
 }
+$services = get_all_services($pdo);
 
-$service = $service_id ? get_service_info($pdo, $service_id) : false;
+include 'includes/header.php';
 ?>
-
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <title><?= htmlspecialchars($service['Name'] ?? 'Service Details') ?> - J&amp;T&amp;G Nails & SPA</title>
-  <link rel="stylesheet" href="style.css">
-</head>
-<body>
-  <header>
-    <h1 class="logo">J&amp;T&amp;G Nails & SPA</h1>
-    <nav>
-      <a href="home.php">Home</a>
-      <a href="appointments.php">Appointments</a>
-      <a href="booking.php">Book</a>
-      <a href="services.php">Services</a>
-      <a href="technicians.php">Technicians</a>
-      <a href="login.php">Login</a>
-      <a href="signup.php">Sign Up</a>
-    </nav>
-  </header>
-
-  <main class="container">
-    <?php if ($service): ?>
-      <div class="service-details-container">
-        <div class="service-image">
-          <img src="<?= htmlspecialchars($service['ImagePath']) ?>" alt="<?= htmlspecialchars($service['Name']) ?>">
-        </div>
-        <div class="service-details">
-          <h2><?= htmlspecialchars($service['Name']) ?></h2>
-          <p><strong>Description:</strong> <?= htmlspecialchars($service['Description']) ?></p>
-          <p><strong>Price:</strong> $<?= htmlspecialchars($service['Price']) ?></p>
-          <a href="booking.php?service_id=<?= urlencode($service_id) ?>" class="btn">Book This Service</a>
-        </div>
+<main class="container">
+  <h2>Our Services</h2>
+  <div class="services-list">
+    <?php foreach ($services as $svc): ?>
+      <div class="service-card">
+        <h3><?= htmlspecialchars($svc['Type']) ?></h3>
+        <p><strong>Price:</strong> $<?= htmlspecialchars($svc['Price']) ?></p>
+        <a href="booking.php"
+           class="btn">Book This Service</a>
       </div>
+    <?php endforeach; ?>
+  </div>
+  <div>
+    <a href="home.php" class="btn">Home</a>
+    <?php if ($logged_in): ?>
+      <a href="logout.php" class="btn">Logout</a>
     <?php else: ?>
-      <p>Sorry, this service was not found.</p>
+      <a href="login.php" class="btn">Login</a>
     <?php endif; ?>
-
-    <a href="services.php" class="btn">Back to Services</a>
-  </main>
-
-  <footer class="footer">
+  </div>
+</main>
+<footer class="footer">
     &copy; 2025 J&amp;T&amp;G Nails & SPA
   </footer>
 </body>

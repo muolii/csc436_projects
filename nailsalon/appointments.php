@@ -1,6 +1,6 @@
 <?php
     require 'includes/database-connection.php';
-    require 'includes/sessions.php';    // or wherever you have your login/logout/require_login()
+    include 'includes/sessions.php';    // or wherever you have your login/logout/require_login()
     
     // make sure they’re logged in:
     require_login($_SESSION['logged_in'] ?? false);
@@ -35,26 +35,7 @@ $appointments = get_appointment_info($pdo, $tech_id);
 
     ?> 
 
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <title>My Appointments - J&amp;T&amp;G Nails & SPA</title>
-  <link rel="stylesheet" href="style.css">
-</head>
-<body>
-  <header>
-    <h1 class="logo">J&amp;T&amp;G Nails & SPA</h1>
-    <nav>
-      <a href="home.php">Home</a>
-      <a href="appointments.php">Appointments</a>
-      <a href="booking.php">Book</a>
-      <a href="services.php">Services</a>
-      <a href="technician.php">Technicians</a>
-      <a href="login.php">Login</a>
-      <a href="signup.php">Sign Up</a>
-    </nav>
-  </header>
+<?php include 'includes/header.php'; ?>
   <main class="container">
     <h2>My Appointments</h2>
     <table>

@@ -1,34 +1,32 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <title>Home - J&amp;T&amp;G Nails & SPA</title>
-  <link rel="stylesheet" href="style.css">
-</head>
-<body>
-  <header>
-    <h1 class="logo">J&amp;T&amp;G Nails & SPA</h1>
-    <nav>
-      <a href="home.html">Home</a>
-      <a href="appointments.html">Appointments</a>
-      <a href="booking.html">Book</a>
-      <a href="services.html">Services</a>
-      <a href="technician.html">Technicians</a>
-      <a href="login.php">Login</a>
-      <a href="signup.html">Sign Up</a>
-    </nav>
-  </header>
-  <main class="container">
-    <h2>Welcome!</h2>
-    <div class="home-buttons">
-      <a href="appointments.html" class="btn">View Appointments</a>
-      <a href="booking.html" class="btn">Book Appointment</a>
-      <a href="services.html" class="btn">Services</a>
-      <a href="technician.html" class="btn">Technicians</a>
+<?php
+require 'includes/sessions.php';
+
+$page_title = 'Welcome';
+include 'includes/header.php';
+?>
+
+<main class="container">
+  <h2>Welcome to J&amp;T&amp;G Nails & SPA</h2>
+  <p>Relax, refresh, and let us pamper you. Choose from our full range of nail and spa services below.</p>
+
+  <div class="home-buttons">
+    <?php if (!empty($_SESSION['logged_in'])): ?>
+      <a href="appointments.php"       class="btn">View Appointments</a>
+    <?php endif; ?>
+
+    <a href="booking.php"             class="btn">Book Appointment</a>
+    <a href="services.php"            class="btn">Our Services</a>
+    <a href="technicians.php"         class="btn">Meet the Team</a>
+  </div>
+
+  <?php if (!empty($_SESSION['logged_in'])): ?>
+    <div class="logout-link">
+        <a href="logout.php"             class="btn">Log Out</a>
     </div>
-    <a href="login.html" class="btn">Logout</a>
-  </main>
-  <footer class="footer">
+  <?php endif; ?>
+</main>
+
+<footer class="footer">
     &copy; 2025 J&amp;T&amp;G Nails & SPA
   </footer>
 </body>

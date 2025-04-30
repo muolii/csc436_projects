@@ -1,4 +1,6 @@
 <?php
+include 'includes/sessions.php';
+
 session_start();
 
 // 1) bring in your database connection
@@ -39,13 +41,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 }
 ?>
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <title>Login - J&T&G Nails & SPA</title>
-  <link rel="stylesheet" href="style.css">
-</head>
+<?php include 'includes/header.php'; ?>
 <body>
   <header>…</header>
   <main class="container">
