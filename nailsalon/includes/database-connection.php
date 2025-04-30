@@ -1,33 +1,14 @@
 <?php                                             // Opening PHP tag
 
 $type     = 'mysql';                             // Type of database
+$server   = '192.185.2.183';                    // Server the database is on
+$db       = 'tanyavm_Nails';     // Name of the database
+$port     = '3306';                           // Port is usually 3306 in Hostgator
+$charset  = 'utf8mb4';                       // UTF-8 encoding using 4 bytes of data per char
 
-// Load environment variables from .env file
-$env_path = dirname(__DIR__) . '/.env';
-$env_vars = [];
+$username = 'tanyavm';     // Enter YOUR cPanel username and user here
+$password = '#Vermonth7';           // Enter YOUR user password here
 
-if (file_exists($env_path)) {
-    $env_content = file_get_contents($env_path);
-    $lines = explode(PHP_EOL, $env_content);
-    
-    foreach ($lines as $line) {
-        $line = trim($line);
-        if (empty($line) || strpos($line, '#') === 0) {
-            continue; // Skip empty lines and comments
-        }
-        
-        list($key, $value) = explode('=', $line, 2);
-        $env_vars[trim($key)] = trim($value);
-    }
-    
-    // Override hardcoded credentials with .env values if they exist
-    $server   = $env_vars['DB_HOST'] ?? $server;
-    $db       = $env_vars['DB_NAME'] ?? $db;
-    $port     = $env_vars['DB_PORT'] ?? $port;
-    $charset  = $env_vars['DB_CHARSET'] ?? $charset;
-    $username = $env_vars['DB_USER'] ?? $username;
-    $password = $env_vars['DB_PASSWORD'] ?? $password;
-}
 
 // DO *NOT* CHANGE ANYTHING BENEATH THIS LINE
 

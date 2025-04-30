@@ -14,7 +14,7 @@
       <a href="booking.html">Book</a>
       <a href="services.html">Services</a>
       <a href="technician.html">Technicians</a>
-      <a href="login.html">Login</a>
+      <a href="login.php">Login</a>
       <a href="signup.html">Sign Up</a>
     </nav>
   </header>
