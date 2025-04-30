@@ -1,21 +1,58 @@
+<?php
+    require 'includes/database-connection.php';
+    require 'includes/sessions.php';    // or wherever you have your login/logout/require_login()
+    
+    // make sure they’re logged in:
+    require_login($_SESSION['logged_in'] ?? false);
+    
+    // pull the tech’s ID out of the session:
+    $tech_id = $_SESSION['tech_id'];    
+
+    function get_appointment_info(PDO $pdo, string $tech_id) {
+$sql = "
+SELECT 
+            ts.Start_Time AS StartTime, 
+            ts.Date AS Day, 
+            s.Type AS ServiceName, 
+            c.Name AS CustomerName 
+            FROM 
+            Appointment a
+            JOIN Timeslot ts ON a.TimeslotID = ts.TimeslotID 
+            JOIN Service s ON a.ServiceID = s.ServiceID 
+            JOIN Customer c ON a.AppointmentID = c.AppointmentID
+            WHERE
+            a.TechnicianID = :tech_id
+            ORDER BY
+            ts.Date;
+";
+
+$stmt = $pdo->prepare($sql);
+$stmt->execute(['tech_id' => $tech_id]);
+
+return $stmt->fetchAll(PDO::FETCH_ASSOC);
+}
+$appointments = get_appointment_info($pdo, $tech_id);
+
+    ?> 
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
   <title>My Appointments - J&amp;T&amp;G Nails & SPA</title>
-  <link rel="stylesheet" href="./css/style.css">
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
   <header>
     <h1 class="logo">J&amp;T&amp;G Nails & SPA</h1>
     <nav>
-      <a href="home.html">Home</a>
-      <a href="appointments.html">Appointments</a>
-      <a href="booking.html">Book</a>
-      <a href="services.html">Services</a>
-      <a href="technician.html">Technicians</a>
-      <a href="login.html">Login</a>
-      <a href="signup.html">Sign Up</a>
+      <a href="home.php">Home</a>
+      <a href="appointments.php">Appointments</a>
+      <a href="booking.php">Book</a>
+      <a href="services.php">Services</a>
+      <a href="technician.php">Technicians</a>
+      <a href="login.php">Login</a>
+      <a href="signup.php">Sign Up</a>
     </nav>
   </header>
   <main class="container">
@@ -26,27 +63,22 @@
           <th>Appointment Time</th>
           <th>Appointment Day</th>
           <th>Service</th>
-          <th>Technician</th>
+          <th>Customer</th>
         </tr>
       </thead>
       <tbody>
+      <?php foreach ($appointments as $cust_info): ?>
         <tr>
-          <td>1:00 PM</td>
-          <td>2025-05-01</td>
-          <td>Gel Manicure</td>
-          <td>Alice</td>
+            <td><?= htmlspecialchars($cust_info['StartTime']) ?></td>
+            <td><?= htmlspecialchars($cust_info['Day']) ?></td>
+            <td><?= htmlspecialchars($cust_info['ServiceName']) ?></td>
+            <td><?= htmlspecialchars($cust_info['CustomerName']) ?></td>
         </tr>
-        <tr>
-          <td>2:30 PM</td>
-          <td>2025-05-05</td>
-          <td>Acrylic Full Set</td>
-          <td>Jessica</td>
-        </tr>
+    <?php endforeach; ?>
       </tbody>
     </table>
     <div>
-      <a href="home.html" class="btn">Home</a>
-      <a href="login.html" class="btn">Logout</a>
+      <a href="logout.php" class="btn">Logout</a>
     </div>
   </main>
   <footer class="footer">

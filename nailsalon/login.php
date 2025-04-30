@@ -1,58 +1,69 @@
 <?php
-include 'includes/sessions.php';
+session_start();
 
-if ($logged_in) {                              // If already logged in
-    header('Location: account.php');           // Redirect to account page
-    exit;                                      // Stop further code running
-}    
+// 1) bring in your database connection
+require 'includes/database-connection.php';
 
-if($_SERVER['REQUEST_METHOD'] == 'POST') {     // If form submitted
-    $user_email    = $_POST['email'];          // Email user sent
-    $user_password = $_POST['password'];       // Password user sent
+// if they’re already logged in, bounce them to the account page
+if (!empty($_SESSION['logged_in'])) {
+    header('Location: appointments.php');
+    exit;
+}
 
-    if ($user_email == $email and $user_password == $password) { // If details correct
-        login();                               // Call login function
-        header('Location: account.php');       // Redirect to account page
-        exit;                                  // Stop further code running
+$error = '';
+
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    $username      = $_POST['username'] ?? '';
+    $user_password = $_POST['password'] ?? '';
+
+    // 2) look up that username in your technicians table
+    $sql  = "SELECT TechnicianID, Name, username, password 
+             FROM Technician
+             WHERE username = :username 
+             LIMIT 1";
+    $stmt = $pdo->prepare($sql);
+    $stmt->execute(['username' => $username]);
+    $tech = $stmt->fetch();
+
+    // 3) if we found them & the password matches the stored hash:
+    if ($tech && $user_password === $tech['password']) {
+        // LOGIN SUCCESS (plaintext match)
+        session_regenerate_id(true);
+        $_SESSION['logged_in'] = true;
+        $_SESSION['tech_id']   = $tech['TechnicianID'];
+        $_SESSION['tech_name'] = $tech['Name'];
+        header('Location: appointments.php');
+        exit;
+    } else {
+        $error = 'Invalid username or password.';
     }
 }
 ?>
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Login - J&amp;T&amp;G Nails & SPA</title>
+  <title>Login - J&T&G Nails & SPA</title>
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <header>
-    <h1 class="logo">J&amp;T&amp;G Nails & SPA</h1>
-    <nav>
-      <a href="home.html">Home</a>
-      <a href="appointments.html">Appointments</a>
-      <a href="booking.html">Book</a>
-      <a href="services.html">Services</a>
-      <a href="technician.html">Technicians</a>
-      <a href="login.html">Login</a>
-      <a href="signup.html">Sign Up</a>
-    </nav>
-  </header>
+  <header>…</header>
   <main class="container">
     <h2>Login</h2>
-    <form>
+    <?php if ($error): ?>
+      <p class="error"><?= htmlspecialchars($error) ?></p>
+    <?php endif; ?>
+    <form method="POST" action="">
       <label for="username">Username</label>
-      <input id="username" type="text" placeholder="Username" required>
+      <input id="username" name="username" type="text" placeholder="Username" required>
 
       <label for="password">Password</label>
-      <input id="password" type="password" placeholder="Password" required>
+      <input id="password" name="password" type="password" placeholder="Password" required>
 
       <button type="submit" class="btn">Login</button>
     </form>
-    <a href="signup.html" class="btn">Sign Up</a>
+    <a href="signup.php" class="btn">Sign Up</a>
   </main>
-  <footer class="footer">
-    &copy; 2025 J&amp;T&amp;G Nails & SPA
-  </footer>
+  <footer>…</footer>
 </body>
 </html>
