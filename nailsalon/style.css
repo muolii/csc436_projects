@@ -1,0 +1,151 @@
+/* 1. Import a clean system font (no extra downloads) */
+:root {
+    --primary:   #4CAF50;
+    --primary-90: #66BB6A;
+    --accent:    #0077CC;
+    --bg:        #F4F4F9;
+    --surface:   #FFFFFF;
+    --text:      #333333;
+    --muted:     #777777;
+    --radius:    8px;
+    --gap:       20px;
+    --transition: 0.3s;
+  }
+  
+  /* 2. Global resets */
+  *,
+  *::before,
+  *::after {
+    box-sizing: border-box;
+  }
+  body {
+    margin:      0;
+    font-family: "Segoe UI", Tahoma, sans-serif;
+    background:  var(--bg);
+    color:       var(--text);
+    line-height: 1.6;
+  }
+  
+  /* 3. Header */
+  header {
+    background:  var(--surface);
+    padding:     var(--gap) 0;
+    box-shadow:  0 2px 4px rgba(0,0,0,0.1);
+    text-align:  center;
+  }
+  header .logo {
+    margin:      0;
+    font-size:   1.8rem;
+    color:       var(--primary);
+  }
+  header nav {
+    margin-top:  10px;
+  }
+  header nav a {
+    margin:      0 10px;
+    text-decoration: none;
+    color:       var(--text);
+    font-weight: 600;
+    transition:  color var(--transition);
+  }
+  header nav a:hover {
+    color:       var(--primary);
+  }
+  
+  /* 4. Container for page content */
+  .container {
+    max-width:   800px;
+    margin:      var(--gap) auto;
+    padding:     var(--gap);
+    background:  var(--surface);
+    border-radius: var(--radius);
+    box-shadow:  0 2px 8px rgba(0,0,0,0.05);
+  }
+  
+  /* 5. Buttons / Nav-buttons */
+  .btn,
+  button {
+    display:     inline-block;
+    padding:     10px 20px;
+    margin:      5px 0;
+    background:  var(--primary);
+    color:       var(--surface);
+    text-decoration: none;
+    border:      none;
+    border-radius: var(--radius);
+    cursor:      pointer;
+    transition:  background var(--transition);
+  }
+  .btn:hover,
+  button:hover {
+    background:  var(--primary-90);
+  }
+  
+  /* 6. Forms */
+  form label {
+    font-weight: 600;
+  }
+  form input,
+  form select,
+  form textarea {
+    width:       100%;
+    padding:     10px;
+    margin:      8px 0 16px;
+    border:      1px solid #ccc;
+    border-radius: var(--radius);
+    font-size:   1rem;
+  }
+  form input:focus {
+    outline:     none;
+    border-color: var(--accent);
+  }
+  
+  /* 7. Tables */
+  table {
+    width:       100%;
+    border-collapse: collapse;
+    margin:      var(--gap) 0;
+  }
+  table th,
+  table td {
+    padding:     12px;
+    border:      1px solid #ddd;
+  }
+  table th {
+    background:  var(--bg);
+    text-align: left;
+  }
+  
+  /* 8. Cards (services, techs, etc) */
+  .services-list,
+  .tech-list,
+  .home-buttons {
+    display:     grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px,1fr));
+    gap:         var(--gap);
+  }
+  .service-card,
+  .tech-card {
+    background:  var(--surface);
+    padding:     var(--gap);
+    border:      1px solid #eee;
+    border-radius: var(--radius);
+    box-shadow:  0 1px 3px rgba(0,0,0,0.05);
+  }
+  .service-card h3 {
+    margin:      0 0 8px;
+    color:       var(--accent);
+  }
+  .tech-card h3 {
+    margin:      0 0 8px;
+    color:       var(--primary);
+  }
+  
+  /* 9. Footer */
+  .footer {
+    text-align:  center;
+    padding:     12px 0;
+    font-size:   0.9rem;
+    color:       var(--muted);
+  }
+  
