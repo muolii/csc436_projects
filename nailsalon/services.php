@@ -25,11 +25,6 @@ include 'includes/header.php';
   </div>
   <div>
     <a href="home.php" class="btn">Home</a>
-    <?php if ($logged_in): ?>
-      <a href="logout.php" class="btn">Logout</a>
-    <?php else: ?>
-      <a href="login.php" class="btn">Login</a>
-    <?php endif; ?>
   </div>
 </main>
 <footer class="footer">

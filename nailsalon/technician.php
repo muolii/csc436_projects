@@ -23,7 +23,6 @@ $technicians = get_all_technicians($pdo);
     </div>
     <div>
       <a href="home.php" class="btn">Home</a>
-      <a href="logout.php" class="btn">Logout</a>
     </div>
   </main>
 
