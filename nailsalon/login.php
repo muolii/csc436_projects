@@ -7,7 +7,7 @@ require 'includes/database-connection.php';
 
 // if they’re already logged in, bounce them to the account page
 if (!empty($_SESSION['logged_in'])) {
-    header('Location: appointments.php');
+    header('Location: https://tanyavm.rhody.dev/csc436_projects/nailsalon/appointments.php');
     exit;
 }
 
