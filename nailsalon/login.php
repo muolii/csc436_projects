@@ -3,7 +3,6 @@ include 'includes/sessions.php';
 
 session_start();
 
-// 1) bring in your database connection
 require 'includes/database-connection.php';
 
 // if they’re already logged in, bounce them to the account page
@@ -18,7 +17,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $username      = $_POST['username'] ?? '';
     $user_password = $_POST['password'] ?? '';
 
-    // 2) look up that username in your technicians table
+    // look up that username in your technicians table
     $sql  = "SELECT TechnicianID, Name, username, password 
              FROM Technician
              WHERE username = :username 
@@ -27,9 +26,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $stmt->execute(['username' => $username]);
     $tech = $stmt->fetch();
 
-    // 3) if we found them & the password matches the stored hash:
+    // if we found them & the password matches the stored hash:
     if ($tech && $user_password === $tech['password']) {
-        // LOGIN SUCCESS (plaintext match)
         session_regenerate_id(true);
         $_SESSION['logged_in'] = true;
         $_SESSION['tech_id']   = $tech['TechnicianID'];
