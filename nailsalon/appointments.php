@@ -1,9 +1,6 @@
 <?php
-    ini_set('display_startup_errors', 1);
-    error_reporting(E_ALL);
-
     require 'includes/database-connection.php';
-    include 'includes/sessions.php';    // or wherever you have your login/logout/require_login()
+    include 'includes/sessions.php';    
     
     // make sure they’re logged in:
     require_login($_SESSION['logged_in'] ?? false);
